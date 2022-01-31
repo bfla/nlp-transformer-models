@@ -6,6 +6,15 @@ from models.predict import predict
 
 app = Flask(__name__)
 
+def serialize_prediction(prediction):
+    json_dict = {
+        "score": prediction["score"],
+        "start": prediction["start"],
+        "end": prediction["end"],
+        "answer": prediction["answer"]
+    }
+    return json_dict
+
 @app.route('/health', methods=['GET'])
 def health_check():
     json_res = {
@@ -19,10 +28,15 @@ def post_pipelines():
     body = request.json
     model = body['model']
     context = body['context']
+    query = body['query']
     # json_res = serialize_doc(doc, matches)
-    predictions = predict(model, context, options)
-    json_res = jsonify({'predictions': predictions})
-    return jsonify(json_res)
+    options = body['options'] if body['options'] else {}
+    predictions = predict(model, context, query, options = options)
+    print('pred', predictions)
+    json_predictions = list(map(serialize_prediction, predictions))
+    payload = {'predictions': predictions}
+    print('payload', payload)
+    return jsonify(payload)
 
 if __name__ == '__main__':
     app.run(

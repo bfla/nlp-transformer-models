@@ -11,14 +11,11 @@ As usual, Python is extremely fussy about using exactly the right version:
 
 ## Setup the project locally
 ```bash
-# create a virtual environment (with Python 3.7)
-python -m venv ./env
-
-# use the virtual environment
-source ./env/bin/activate
+# install the pipenv package manager
+pip install pipenv
 
 # Install packages
-python install -r ./requirements.txt
+pipenv install --dev
 ```
 
 ## Useful commands
@@ -26,17 +23,11 @@ python install -r ./requirements.txt
 # use the virtual environment:
 source ./env/bin/activate
 
-# run the app (on port 5000)
-DEBUG=True python3 ./server.py
-
-# to install all packages:
-pip3 install -r .requirements.txt
-
-# to freeze packages
-pip3 freeze > .requirements.txt
+# run the app (on port 5001)
+DEBUG=True pipenv run python ./server.py
 
 # to install a new package:
-pip3 install my_package && pip freeze > ./requirements.txt
+pipenv install my_package
 ```
 
 ## Environment variables (optional)

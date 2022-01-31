@@ -2,7 +2,7 @@
 name: 'Commit tests'
 on: [push]
 env:
-  SERVICE_NAME: spacy-api
+  SERVICE_NAME: nlp-transformer-models
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -11,12 +11,12 @@ jobs:
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8
+          python-version: 3.9
+      - name: Install pipenv package manager
+        run: pip install pipenv
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-      - name: Download Spacy model
-        run: python -m spacy download en
+        run: pipenv install
+      # - name: Download Spacy model
+        # run: python -m spacy download en
       - name: Run tests
         run: pytest

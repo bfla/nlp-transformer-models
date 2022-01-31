@@ -1,0 +1,22 @@
+# https://medium.com/javascript-in-plain-english/publish-update-npm-packages-with-github-actions-e4d786ffd62a
+name: 'Commit tests'
+on: [push]
+env:
+  SERVICE_NAME: spacy-api
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Download Spacy model
+        run: python -m spacy download en
+      - name: Run tests
+        run: pytest

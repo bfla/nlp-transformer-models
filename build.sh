@@ -1,0 +1,1 @@
+docker build -t buccaneerai/spacy-api:latest .

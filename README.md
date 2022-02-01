@@ -1,30 +1,38 @@
-# spacy-core-api
-This project is a light HTTP API wrapper around the spacy toolkit (for natural language processing).  
-
-You can send requests containing strings and get output from spacy including named entities and part-of-speech tags.
-
-You generally don't need this code unless you plan on making changes to the underlying API.  In most cases, you can simply run it in a Docker container: `buccaneerai/spacy-api:latest`.
+# nlp-transformer-models
+This project is a light HTTP API wrapper around Hugging Face NLP transformers.
 
 ## Dependencies
 As usual, Python is extremely fussy about using exactly the right version:
-- Python 3.7
+- Python 3.9
 
 ## Setup the project locally
+You'll need to have `pipenv` installed.  To install it:
 ```bash
 # install the pipenv package manager
 pip install pipenv
-
+# or
+pip3 install pipenv
+```
+Now you can install this project's dependencies:
+```bash
 # Install packages
 pipenv install --dev
 ```
 
+> 💡 The first time you run the server, it will need to download any models that aren't stored on the local machine.  These models are large and it may take some time.
+
 ## Useful commands
 ```bash
 # use the virtual environment:
-source ./env/bin/activate
+# source ./.env/bin/activate
+pipenv shell
 
 # run the app (on port 5001)
 DEBUG=True pipenv run python ./server.py
+
+# run tests
+# pipenv run python -m test
+pipenv run pytest
 
 # to install a new package:
 pipenv install my_package
@@ -45,6 +53,6 @@ Gets tokens (including part-of-speech tags and named entities) from a given stri
 ```bash
 curl -H "Content-Type: application/json" \
   --request POST \
-  --data '{"model":"distilgpt2","context":"Hello. My name is Fido.  I am a Dog.  How are you today?"}' \
+  --data '{"model":"distilbert_qa_extractive","context":"Hello. My name is Fido.  I am a Dog.  How are you today?","query": "Is Fido a human or a dog?"}' \
   http://localhost:5001/pipeline
 ```

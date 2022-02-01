@@ -4,7 +4,9 @@ import os
 
 from lo.get import get
 from lo.flatten import flatten
-from lib.serialize_prediction import serialize_prediction
+from lo.fmap import fmap
+from lo.pipe import pipe
+from internals.serialize_prediction import serialize_prediction
 from models.predict import predict
 
 app = Flask(__name__)
@@ -32,7 +34,7 @@ def post_pipelines():
         flatten(1)
     )(predictions)
     # list(flatten(1)(map(serialize_prediction, predictions)))
-    payload = {'predictions': predictions}
+    payload = {'predictions': json_predictions}
     print('payload', payload)
     return jsonify(payload)
 

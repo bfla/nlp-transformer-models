@@ -9,6 +9,16 @@ def update_list(acc, scores, label):
 def label_reducer(scores):
     return lambda acc,l: [update_list(acc, scores, l), acc[1] + 1]
 
+def serialize_one_prediction(prediction):
+    json_dict = {
+        "label": get(prediction, "label", None),
+        "score": get(prediction, "score", None),
+        "start": get(prediction, "start", None),
+        "end": get(prediction, "end", None),
+        "answer": get(prediction, "answer", None),
+        "token_str": get(prediction, "token_str", None),
+    }
+    return json_dict
 def serialize_prediction(prediction):
     has_labels = isinstance(get(prediction, "labels", None), list)
     has_scores = isinstance(get(prediction, "scores", None), list)
@@ -20,11 +30,7 @@ def serialize_prediction(prediction):
             [[], -1]
         )
         return result[0]
-    json_dict = {
-        "label": get(prediction, "label", None),
-        "score": get(prediction, "score", None),
-        "start": get(prediction, "start", None),
-        "end": get(prediction, "end", None),
-        "answer": get(prediction, "answer", None),
-    }
+    if isinstance(prediction, list):
+        return list(map(serialize_one_prediction, prediction))
+    json_dict = serialize_one_prediction(prediction)
     return [json_dict]

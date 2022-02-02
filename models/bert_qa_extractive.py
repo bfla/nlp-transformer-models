@@ -6,7 +6,7 @@ model = pipeline(
   tokenizer='bert-large-cased-whole-word-masking-finetuned-squad'
 )
 
-def predict(context, query, options):
+def predict(context, query, options = {}):
   if not context:
     print('context is required for question-answering model')
     return list()

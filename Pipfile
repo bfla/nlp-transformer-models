@@ -8,6 +8,11 @@ transformers = "*"
 flask = "*"
 pytest = "*"
 torch = "*"
+gsutil = "*"
+google-cloud-storage = "*"
+torchvision = "*"
+pandas = "*"
+numpy = "*"
 
 [dev-packages]
 

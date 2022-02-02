@@ -22,18 +22,17 @@ def health_check():
 def post_pipelines():
     # print(request)
     body = request.json
-    model = body['model']
-    context = body['context']
-    query = body['query']
-    # json_res = serialize_doc(doc, matches)
-    options = body['options'] if body['options'] else {}
+    model = get(body, 'model', None)
+    # if not model:
+    context = get(body, 'context', None)
+    query = get(body, 'query', None)
+    options = get(body, 'options', {})
     predictions = predict(model, context, query, options = options)
     print('pred', predictions)
     json_predictions = pipe(
         fmap(serialize_prediction),
         flatten(1)
     )(predictions)
-    # list(flatten(1)(map(serialize_prediction, predictions)))
     payload = {'predictions': json_predictions}
     print('payload', payload)
     return jsonify(payload)
